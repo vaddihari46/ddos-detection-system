@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>DDoS Detection Result</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+font-family:Arial;
+background:#0f3b52;
+text-align:center;
+color:white;
+}
+
+.container{
+background:white;
+color:black;
+padding:30px;
+width:450px;
+margin:auto;
+margin-top:120px;
+border-radius:10px;
+}
+
+.attack{
+color:red;
+font-weight:bold;
+}
+
+.safe{
+color:green;
+font-weight:bold;
+}
+
+button{
+background:red;
+color:white;
+border:none;
+padding:10px 20px;
+font-size:16px;
+cursor:pointer;
+border-radius:5px;
+margin-top:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>DDoS Detection Result</h2>
+
+<h3>Accuracy : {{accuracy}}%</h3>
+
+{% if attack %}
+
+<h2 class="attack">⚠ Attack Detected</h2>
+
+<h3>Attack Type : {{prediction}}</h3>
+
+<h3>Network Blocked</h3>
+
+<script>
+alert("⚠ DDoS Attack Detected!");
+</script>
+
+<audio id="alarmSound" autoplay loop>
+<source src="{{ url_for('static', filename='alert.mp3') }}" type="audio/mpeg">
+</audio>
+
+<br>
+
+<button onclick="stopSound()">Stop Alarm</button>
+
+{% else %}
+
+<h2 class="safe">✔ Normal Traffic</h2>
+
+<h3>Traffic Type : {{prediction}}</h3>
+
+{% endif %}
+
+<br><br>
+
+<canvas id="graph"></canvas>
+
+</div>
+
+<script>
+
+function stopSound(){
+var sound=document.getElementById("alarmSound");
+if(sound){
+sound.pause();
+sound.currentTime=0;
+}
+}
+
+var ctx=document.getElementById('graph');
+
+new Chart(ctx,{
+type:'bar',
+
+data:{
+labels:["Normal Traffic","Attack Traffic"],
+
+datasets:[{
+label:"Traffic Detection",
+
+data:[
+{{ 1 if prediction=="Benign" else 0 }},
+{{ 0 if prediction=="Benign" else 1 }}
+]
+}]
+}
+
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DDoS Detection</title>
+
+    <style>
+
+        body{
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            color:white;
+        }
+
+        .container{
+            text-align:center;
+        }
+
+        h1{
+            margin-bottom:20px;
+        }
+
+        .upload-box{
+            background:white;
+            color:black;
+            padding:30px;
+            border-radius:10px;
+            width:350px;
+            margin:auto;
+        }
+
+        input[type=file]{
+            margin:15px 0;
+        }
+
+        button{
+            background:#2ecc71;
+            border:none;
+            padding:12px 25px;
+            font-size:16px;
+            color:white;
+            border-radius:6px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:#27ae60;
+        }
+
+        .result{
+            margin-top:20px;
+            font-size:22px;
+            font-weight:bold;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Cyber Security DDoS Detection Dashboard</h1>
+
+    <div class="upload-box">
+
+        <h3>Upload Network CSV Data</h3>
+
+        <form action="/predict" method="post" enctype="multipart/form-data">
+
+            <input type="file" name="file" required>
+
+            <br>
+
+            <button type="submit">Analyze Traffic</button>
+
+        </form>
+
+        {% if prediction_text %}
+        <div class="result">
+            {{ prediction_text }}
+        </div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>
