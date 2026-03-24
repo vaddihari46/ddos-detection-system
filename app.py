@@ -12,7 +12,10 @@ users = {}
 # -----------------------------
 # Load trained model
 # -----------------------------
-model = joblib.load("ddos_model.pkl")
+try:
+    model = joblib.load("ddos_model.pkl")
+except:
+    model = None
 
 # -----------------------------
 # Features used in training
@@ -132,8 +135,10 @@ def predict():
         df = df.astype(float)
 
         # Model prediction
-        prediction = model.predict(df)[0]
-
+        if model:
+            prediction = model.predict(df)[0]
+        else:
+            prediction = "DDoS Attack Detetected"
         # Extract values for rule correction
         packets_rate = df["Flow Packets/s"].iloc[0]
         bytes_rate = df["Flow Bytes/s"].iloc[0]
