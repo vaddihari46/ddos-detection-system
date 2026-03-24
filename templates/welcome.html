@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Cyber Security DDoS Detection</title>
+
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
+overflow:hidden;
+color:white;
+
+/* Background image */
+
+background-image:url("https://images.unsplash.com/photo-1550751827-4bd374c3f58b");
+background-size:cover;
+background-position:center;
+}
+
+/* particle overlay */
+
+#particles-js{
+position:absolute;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.75);
+}
+
+/* main content */
+
+.container{
+position:relative;
+z-index:10;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+text-align:center;
+}
+
+/* top cyber image */
+
+img{
+width:120px;
+margin-bottom:20px;
+filter:drop-shadow(0 0 10px cyan);
+}
+
+/* title */
+
+h1{
+font-size:50px;
+letter-spacing:3px;
+margin-bottom:40px;
+color:white;
+
+text-shadow:
+0 0 10px cyan,
+0 0 20px cyan,
+0 0 40px cyan;
+}
+
+/* button row */
+
+.button-group{
+display:flex;
+gap:25px;
+}
+
+/* buttons */
+
+button{
+width:170px;
+padding:14px;
+font-size:18px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+transition:0.3s;
+}
+
+/* register */
+
+.register{
+background:#00ff9c;
+color:black;
+box-shadow:0 0 10px #00ff9c;
+}
+
+.register:hover{
+transform:scale(1.1);
+}
+
+/* login */
+
+.login{
+background:#00bfff;
+color:black;
+box-shadow:0 0 10px #00bfff;
+}
+
+.login:hover{
+transform:scale(1.1);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="particles-js"></div>
+
+<div class="container">
+
+<img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png">
+
+<h1>Cyber Security DDoS Detection System</h1>
+
+<div class="button-group">
+
+<a href="/register">
+<button class="register">Register</button>
+</a>
+
+<a href="/login">
+<button class="login">Login</button>
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+particlesJS("particles-js", {
+
+particles: {
+
+number:{
+value:100
+},
+
+color:{
+value:"#00ffff"
+},
+
+shape:{
+type:"circle"
+},
+
+opacity:{
+value:0.6
+},
+
+size:{
+value:3,
+random:true
+},
+
+line_linked:{
+enable:true,
+distance:150,
+color:"#00ffff",
+opacity:0.4,
+width:1
+},
+
+move:{
+enable:true,
+speed:2
+}
+
+},
+
+interactivity:{
+
+detect_on:"canvas",
+
+events:{
+
+onhover:{
+enable:true,
+mode:"repulse"
+},
+
+onclick:{
+enable:true,
+mode:"push"
+}
+
+},
+
+modes:{
+
+repulse:{
+distance:120
+},
+
+push:{
+particles_nb:4
+}
+
+}
+
+},
+
+retina_detect:true
+
+});
+
+</script>
+
+</body>
+</html>

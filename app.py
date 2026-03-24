@@ -4,10 +4,19 @@ import joblib
 
 app = Flask(__name__)
 
+# -----------------------------
+# Temporary user storage
+# -----------------------------
+users = {}
+
+# -----------------------------
 # Load trained model
+# -----------------------------
 model = joblib.load("ddos_model.pkl")
 
+# -----------------------------
 # Features used in training
+# -----------------------------
 features = [
     "Flow Duration",
     "Total Fwd Packets",
@@ -18,7 +27,9 @@ features = [
     "Flow Packets/s"
 ]
 
+# -----------------------------
 # Accuracy values for display
+# -----------------------------
 accuracy_map = {
     "Benign": "97%",
     "UDP": "98.7%",
@@ -26,16 +37,86 @@ accuracy_map = {
     "DrDoS": "98.6%"
 }
 
-
+# -----------------------------
+# Welcome Page
+# -----------------------------
 @app.route('/')
 def home():
-    return render_template("index.html")
+    return render_template("welcome.html")
 
 
+# -----------------------------
+# Register Page
+# -----------------------------
+@app.route('/register', methods=['GET','POST'])
+def register():
+
+    if request.method == 'POST':
+
+        username = request.form['username']
+        password = request.form['password']
+
+        users[username] = password
+
+        return render_template("login.html")
+
+    return render_template("register.html")
+
+
+# -----------------------------
+# Login Page
+# -----------------------------
+@app.route('/login', methods=['GET','POST'])
+def login():
+
+    if request.method == 'POST':
+
+        username = request.form['username']
+        password = request.form['password']
+
+        if username in users and users[username] == password:
+
+            return render_template("index.html")
+
+        else:
+
+            return "<h3 style='color:red;text-align:center;'>Invalid Login</h3>"
+
+    return render_template("login.html")
+
+
+# -----------------------------
+# Forgot Password
+# -----------------------------
+@app.route('/forgot', methods=['GET','POST'])
+def forgot():
+
+    if request.method == 'POST':
+
+        username = request.form['username']
+        newpassword = request.form['newpassword']
+
+        if username in users:
+
+            users[username] = newpassword
+
+            return render_template("login.html")
+
+        else:
+
+            return "<h3>User not found</h3>"
+
+    return render_template("forgot.html")
+
+
+# -----------------------------
+# Prediction Route (UNCHANGED)
+# -----------------------------
 @app.route('/predict', methods=['POST'])
 def predict():
 
     try:
+
         file = request.files['file']
 
         if file.filename == "":
@@ -59,7 +140,7 @@ def predict():
         fwd_packets = df["Total Fwd Packets"].iloc[0]
         bwd_packets = df["Total Backward Packets"].iloc[0]
 
-        # Rule-based correction (fix SYN / UDP confusion)
+        # Rule-based correction
         if bytes_rate > 10000000:
             prediction = "DrDoS"
 
@@ -72,7 +153,7 @@ def predict():
         else:
             prediction = "Benign"
 
-        # Get accuracy for display
+        # Accuracy display
         accuracy = accuracy_map[prediction]
 
         attack = prediction != "Benign"
@@ -85,11 +166,15 @@ def predict():
         )
 
     except Exception as e:
+
         return render_template(
             "index.html",
             prediction_text=f"Error: {str(e)}"
         )
 
 
+# -----------------------------
+# Run Server
+# -----------------------------
 if __name__ == "__main__":
     app.run(debug=True)
